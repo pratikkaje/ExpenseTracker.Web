@@ -4,6 +4,7 @@
 // -------------------------------------------------------
 
 using ExpenseTracker.Web.Brokers.API;
+using ExpenseTracker.Web.Brokers.DateTime;
 using ExpenseTracker.Web.Brokers.Logging;
 using ExpenseTracker.Web.Models.Configurations;
 using ExpenseTracker.Web.Views;
@@ -30,7 +31,8 @@ internal class Program
         builder.Services
             .AddScoped<IApiBroker, ApiBroker>()
             .AddScoped<ILogger, Logger<LoggingBroker>>()
-            .AddScoped<ILoggingBroker, LoggingBroker>();
+            .AddScoped<ILoggingBroker, LoggingBroker>()
+            .AddScoped<IDateTimeBroker,DateTimeBroker>();
 
         var app = builder.Build();
 
