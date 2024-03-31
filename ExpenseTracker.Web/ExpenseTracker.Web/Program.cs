@@ -5,7 +5,6 @@
 
 using ExpenseTracker.Web.Brokers.API;
 using ExpenseTracker.Web.Brokers.Logging;
-using ExpenseTracker.Web.Client.Pages;
 using ExpenseTracker.Web.Models.Configurations;
 using ExpenseTracker.Web.Views;
 using Microsoft.AspNetCore.Builder;

@@ -19,7 +19,7 @@ namespace ExpenseTracker.Web.Brokers.Logging
             this.logger.LogCritical(exception, exception.Message);
 
         public void LogDebug(string message) =>
-            this.logger.LogDebug(message);        
+            this.logger.LogDebug(message);
 
         public void LogError(Exception exception) =>
             this.logger.LogError(exception, exception.Message);
