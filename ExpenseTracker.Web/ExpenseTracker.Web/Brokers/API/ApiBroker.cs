@@ -1,4 +1,9 @@
-﻿using RESTFulSense.Clients;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using RESTFulSense.Clients;
 using System.Threading.Tasks;
 
 namespace ExpenseTracker.Web.Brokers.API

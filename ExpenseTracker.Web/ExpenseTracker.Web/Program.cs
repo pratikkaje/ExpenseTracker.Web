@@ -1,3 +1,8 @@
+// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
 using ExpenseTracker.Web.Brokers.API;
 using ExpenseTracker.Web.Client.Pages;
 using ExpenseTracker.Web.Models.Configurations;
