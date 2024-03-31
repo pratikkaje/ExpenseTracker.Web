@@ -4,6 +4,7 @@
 // -------------------------------------------------------
 
 using ExpenseTracker.Web.Brokers.API;
+using ExpenseTracker.Web.Brokers.Logging;
 using ExpenseTracker.Web.Client.Pages;
 using ExpenseTracker.Web.Models.Configurations;
 using ExpenseTracker.Web.Views;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using RESTFulSense.Clients;
 using System;
 
@@ -25,8 +27,11 @@ internal class Program
             .AddInteractiveWebAssemblyComponents();
 
         AddHttpClient(builder);
-        builder.Services.AddScoped<IApiBroker, ApiBroker>();
 
+        builder.Services
+            .AddScoped<IApiBroker, ApiBroker>()
+            .AddScoped<ILogger, Logger<LoggingBroker>>()
+            .AddScoped<ILoggingBroker, LoggingBroker>();
 
         var app = builder.Build();
 
