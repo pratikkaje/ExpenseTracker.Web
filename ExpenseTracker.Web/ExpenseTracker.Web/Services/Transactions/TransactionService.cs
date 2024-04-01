@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Web.Services.Transactions
 {
-    public class TransactionService : ITransactionService
+    public partial class TransactionService : ITransactionService
     {
         private readonly IApiBroker apiBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -20,7 +20,12 @@ namespace ExpenseTracker.Web.Services.Transactions
             this.apiBroker = apiBroker;
             this.loggingBroker = loggingBroker;
         }
-        public async ValueTask<Transaction> AddTransactionAsync(Transaction transaction) =>
-            await this.apiBroker.PostTransactionAsync(transaction);
+
+        public ValueTask<Transaction> AddTransactionAsync(Transaction transaction) =>
+            TryCatch(async () =>
+            {
+                ValidateTransaction(transaction);
+                return await this.apiBroker.PostTransactionAsync(transaction);
+            });
     }
 }
