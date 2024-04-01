@@ -6,12 +6,10 @@
 using ExpenseTracker.Web.Models.Transactions;
 using System.Threading.Tasks;
 
-namespace ExpenseTracker.Web.Brokers.API
+namespace ExpenseTracker.Web.Services.Transactions
 {
-    public partial class ApiBroker
+    public interface ITransactionService
     {
-        private const string relativeUrl = "api/transactions";
-        public async ValueTask<Transaction> PostTransactionAsync(Transaction transaction) =>
-            await PostAsync<Transaction>(relativeUrl, transaction);
+        ValueTask<Transaction> AddTransactionAsync(Transaction transaction);
     }
 }
