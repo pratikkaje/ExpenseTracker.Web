@@ -20,9 +20,7 @@ namespace ExpenseTracker.Web.Services.Transactions
             this.apiBroker = apiBroker;
             this.loggingBroker = loggingBroker;
         }
-        public ValueTask<Transaction> AddTransactionAsync(Transaction transaction)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async ValueTask<Transaction> AddTransactionAsync(Transaction transaction) =>
+            await this.apiBroker.PostTransactionAsync(transaction);
     }
 }
