@@ -24,7 +24,7 @@ namespace ExpenseTracker.Web.Services.Transactions
         public ValueTask<Transaction> AddTransactionAsync(Transaction transaction) =>
             TryCatch(async () =>
             {
-                ValidateTransaction(transaction);
+                ValidateTransactionOnAdd(transaction);
                 return await this.apiBroker.PostTransactionAsync(transaction);
             });
     }

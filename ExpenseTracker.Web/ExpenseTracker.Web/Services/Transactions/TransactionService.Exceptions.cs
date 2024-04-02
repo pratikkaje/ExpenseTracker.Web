@@ -35,6 +35,5 @@ namespace ExpenseTracker.Web.Services.Transactions
 
             return transactionValidationException;
         }
-
     }
 }

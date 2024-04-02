@@ -59,20 +59,56 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
             this.apiBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnAddIfTransactionIdIsInvalidationAndLogItAsync()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public async Task ShouldThrowValidationExceptionOnAddIfTransactionIdIsInvalidationAndLogItAsync(string invalidText)
         {
             // given
-            Guid invalidId = Guid.Empty;
-            Transaction randomTransaction = CreateRandomTransaction();
-            Transaction invalidTransaction = randomTransaction;
-            invalidTransaction.Id = invalidId;
+            Transaction invalidTransaction = new Transaction
+            {
+                Id = Guid.Empty,
+                UserId = Guid.Empty,
+                Category = invalidText,
+                PaymentMode = invalidText,
+                Description = invalidText
+            };
 
             var invalidTransactionException = 
                 new InvalidTransactionException(
-                    parameterName: nameof(Transaction.Id), 
-                    parameterValue: invalidTransaction.Id
+                    message: "Invalid transaction error occurred."
                     );
+
+            invalidTransactionException.AddData(
+                key: nameof(Transaction.Id),
+                values: "Id is required."
+                );
+
+            invalidTransactionException.AddData(
+                key: nameof(Transaction.UserId),
+                values: "Id is required."
+                );
+
+            invalidTransactionException.AddData(
+                key: nameof(Transaction.Category),
+                values: "Text is required."
+                );
+
+            invalidTransactionException.AddData(
+                key: nameof(Transaction.PaymentMode),
+                values: "Text is required."
+                );
+
+            invalidTransactionException.AddData(
+                key: nameof(Transaction.Description),
+                values: "Text is required."
+                );
+
+            invalidTransactionException.AddData(
+                key: nameof(Transaction.Amount),
+                values: "Value is required."
+                );
 
             var expectedTransactionValidationException =
                 new TransactionValidationException(invalidTransactionException);
