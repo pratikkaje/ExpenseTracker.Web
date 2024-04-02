@@ -16,10 +16,14 @@ namespace ExpenseTracker.Web.Services.Transactions
         {
             ValidateTransactionIsNotNull(transaction);
 
-            //Validate(
-            //    (Rule: IsInvalid(transaction.Id), Parameter: nameof(Transaction.Id)),
-
-            //    );
+            Validate(
+                (Rule: IsInvalid(transaction.Id), Parameter: nameof(Transaction.Id)),
+                (Rule: IsInvalid(transaction.UserId), Parameter: nameof(Transaction.UserId)),
+                (Rule: IsInvalid(transaction.Category), Parameter: nameof(Transaction.Category)),
+                (Rule: IsInvalid(transaction.Description), Parameter: nameof(Transaction.Description)),
+                (Rule: IsInvalid(transaction.PaymentMode), Parameter: nameof(Transaction.PaymentMode)),
+                (Rule: IsInvalid(transaction.Amount), Parameter: nameof(transaction.Amount))
+                );
         }
 
         private static void ValidateTransactionIsNotNull(Transaction transaction)
@@ -34,6 +38,18 @@ namespace ExpenseTracker.Web.Services.Transactions
         {
             Condition = id == default,
             Message = "Id is required."
+        };
+
+        private static dynamic IsInvalid(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required."
+        };
+
+        private static dynamic IsInvalid(Decimal value) => new
+        {
+            Condition = value == default,
+            Message = "Value is required."
         };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)

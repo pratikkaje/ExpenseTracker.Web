@@ -24,6 +24,10 @@ namespace ExpenseTracker.Web.Services.Transactions
             {
                 throw CreateAndLogValidationException(nullTransactionException);
             }
+            catch (InvalidTransactionException invalidTransactionException)
+            {
+                throw CreateAndLogValidationException(invalidTransactionException);
+            }
         }
 
         private TransactionValidationException CreateAndLogValidationException(Xeption exception)
