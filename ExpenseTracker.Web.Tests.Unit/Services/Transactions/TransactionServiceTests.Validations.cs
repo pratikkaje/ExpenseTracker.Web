@@ -58,5 +58,48 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.apiBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfTransactionIdIsInvalidationAndLogItAsync()
+        {
+            // given
+            Guid invalidId = Guid.Empty;
+            Transaction randomTransaction = CreateRandomTransaction();
+            Transaction invalidTransaction = randomTransaction;
+            invalidTransaction.Id = invalidId;
+
+            var invalidTransactionException = 
+                new InvalidTransactionException(
+                    parameterName: nameof(Transaction.Id), 
+                    parameterValue: invalidTransaction.Id
+                    );
+
+            var expectedTransactionValidationException =
+                new TransactionValidationException(invalidTransactionException);
+
+            // when
+            ValueTask<Transaction> addTransactionTask = 
+                this.transactionService.AddTransactionAsync(invalidTransaction);
+
+            // then
+            TransactionValidationException actualTransactionValidationException =
+                await Assert.ThrowsAsync<TransactionValidationException>(() => 
+                    addTransactionTask.AsTask());
+
+            actualTransactionValidationException.Should()
+                .BeEquivalentTo(expectedTransactionValidationException);
+
+            this.loggingBrokerMock.Verify(broker => 
+                broker.LogError(It.Is(
+                    SameExceptionAs(expectedTransactionValidationException))), 
+                        Times.Once);
+
+            this.apiBrokerMock.Verify(broker => 
+                broker.PostTransactionAsync(It.IsAny<Transaction>()), 
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.apiBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
