@@ -8,9 +8,6 @@ using ExpenseTracker.Web.Models.Transactions.Exceptions;
 using FluentAssertions;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
@@ -23,7 +20,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
             // given
             Transaction invalidTransaction = null;
 
-            var nullTransactionException = 
+            var nullTransactionException =
                 new NullTransactionException(
                     message: "Transaction is null."
                     );
@@ -75,7 +72,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                 Description = invalidText
             };
 
-            var invalidTransactionException = 
+            var invalidTransactionException =
                 new InvalidTransactionException(
                     message: "Invalid transaction error occurred."
                     );
@@ -114,24 +111,24 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                 new TransactionValidationException(invalidTransactionException);
 
             // when
-            ValueTask<Transaction> addTransactionTask = 
+            ValueTask<Transaction> addTransactionTask =
                 this.transactionService.AddTransactionAsync(invalidTransaction);
 
             // then
             TransactionValidationException actualTransactionValidationException =
-                await Assert.ThrowsAsync<TransactionValidationException>(() => 
+                await Assert.ThrowsAsync<TransactionValidationException>(() =>
                     addTransactionTask.AsTask());
 
             actualTransactionValidationException.Should()
                 .BeEquivalentTo(expectedTransactionValidationException);
 
-            this.loggingBrokerMock.Verify(broker => 
+            this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
-                    SameExceptionAs(expectedTransactionValidationException))), 
+                    SameExceptionAs(expectedTransactionValidationException))),
                         Times.Once);
 
-            this.apiBrokerMock.Verify(broker => 
-                broker.PostTransactionAsync(It.IsAny<Transaction>()), 
+            this.apiBrokerMock.Verify(broker =>
+                broker.PostTransactionAsync(It.IsAny<Transaction>()),
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();

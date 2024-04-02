@@ -10,7 +10,7 @@ namespace ExpenseTracker.Web.Models.Transactions.Exceptions
     public class TransactionValidationException : Xeption
     {
         public TransactionValidationException(Xeption innerException) :
-            base(message:"Transaction Validation Error Occurred, try again.", innerException)
+            base(message: "Transaction Validation Error Occurred, try again.", innerException)
         { }
 
         public TransactionValidationException(string message, Xeption innerException) :

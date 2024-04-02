@@ -6,7 +6,6 @@
 using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.Transactions.Exceptions;
 using System;
-using System.Data;
 
 namespace ExpenseTracker.Web.Services.Transactions
 {
@@ -54,7 +53,7 @@ namespace ExpenseTracker.Web.Services.Transactions
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
-            var invalidTransactionException = 
+            var invalidTransactionException =
                 new InvalidTransactionException();
 
             foreach ((dynamic rule, string parameter) in validations)

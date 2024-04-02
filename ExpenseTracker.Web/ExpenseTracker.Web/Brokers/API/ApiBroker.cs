@@ -5,7 +5,6 @@
 
 using RESTFulSense.Clients;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace ExpenseTracker.Web.Brokers.API
 {

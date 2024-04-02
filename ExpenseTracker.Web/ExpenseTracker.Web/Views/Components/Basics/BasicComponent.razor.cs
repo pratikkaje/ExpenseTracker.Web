@@ -20,7 +20,7 @@ namespace ExpenseTracker.Web.Views.Components.Basics
         public RenderFragment Content { get; set; }
 
         [Parameter]
-        public RenderFragment Error { get; set;}
+        public RenderFragment Error { get; set; }
 
         public RenderFragment GetFragment()
         {

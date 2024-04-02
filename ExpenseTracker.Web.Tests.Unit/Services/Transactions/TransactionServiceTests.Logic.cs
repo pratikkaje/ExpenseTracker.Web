@@ -6,10 +6,6 @@
 using ExpenseTracker.Web.Models.Transactions;
 using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
@@ -25,12 +21,12 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
             Transaction retrievedTransaction = inputTransaction;
             Transaction expectedTransaction = retrievedTransaction;
 
-            this.apiBrokerMock.Setup(broker => 
+            this.apiBrokerMock.Setup(broker =>
                 broker.PostTransactionAsync(inputTransaction))
                     .ReturnsAsync(retrievedTransaction);
-            
+
             // When
-            Transaction actualTransaction = 
+            Transaction actualTransaction =
                 await this.transactionService.AddTransactionAsync(inputTransaction);
 
             // Then

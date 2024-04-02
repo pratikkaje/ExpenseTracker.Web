@@ -33,7 +33,7 @@ internal class Program
             .AddScoped<IApiBroker, ApiBroker>()
             .AddScoped<ILogger, Logger<LoggingBroker>>()
             .AddScoped<ILoggingBroker, LoggingBroker>()
-            .AddScoped<IDateTimeBroker,DateTimeBroker>();
+            .AddScoped<IDateTimeBroker, DateTimeBroker>();
 
         builder.Services.AddScoped<ITransactionService, TransactionService>();
 
