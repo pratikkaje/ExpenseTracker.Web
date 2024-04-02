@@ -3,8 +3,12 @@
 // FREE TO USE FOR THE WORLD
 // -------------------------------------------------------
 
-namespace ExpenseTracker.Web.Brokers.API
+namespace ExpenseTracker.Web.Models.Basics
 {
-    public partial interface IApiBroker
-    { }
+    public enum ComponentState
+    {
+        Loading,
+        Content,
+        Error
+    }
 }

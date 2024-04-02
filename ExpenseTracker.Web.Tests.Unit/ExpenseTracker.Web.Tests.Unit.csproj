@@ -34,4 +34,8 @@
     <Folder Include="Components\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ExpenseTracker.Web\ExpenseTracker.Web\ExpenseTracker.Web.csproj" />
+  </ItemGroup>
+
 </Project>
