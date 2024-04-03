@@ -105,5 +105,58 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
             this.apiBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddIfServerInternalErrorOccursAndLogItAsync()
+        {
+            // given
+            Transaction someTransaction = CreateRandomTransaction();
+            string exceptionMessage = GetRandomString();
+            var httpResponseMessage = new HttpResponseMessage();
+
+            var httpResponseInternalServerErrorException = 
+                new HttpResponseInternalServerErrorException(
+                    responseMessage: httpResponseMessage,
+                    message: exceptionMessage);
+
+            httpResponseInternalServerErrorException.AddData(exceptionMessage);
+
+            var invalidTransactionException =
+                new InvalidTransactionException(
+                    message: "Invalid transaction error occurred.",
+                    innerException: httpResponseInternalServerErrorException,
+                    data: httpResponseInternalServerErrorException.Data);
+
+            var expectedDependencyValidationException =
+                new TransactionDependencyValidationException(httpResponseInternalServerErrorException);
+
+            this.apiBrokerMock.Setup(broker => 
+                broker.PostTransactionAsync(It.IsAny<Transaction>()))
+                    .ThrowsAsync(httpResponseInternalServerErrorException);
+
+            // when
+            ValueTask<Transaction> addTransactionTask = 
+                this.transactionService.AddTransactionAsync(someTransaction);
+
+            TransactionDependencyValidationException actualDependencyValidationException =
+                await Assert.ThrowsAsync<TransactionDependencyValidationException>(() => 
+                    addTransactionTask.AsTask());
+
+            // then
+            actualDependencyValidationException.Should()
+                .BeEquivalentTo(expectedDependencyValidationException);
+
+            this.apiBrokerMock.Verify(broker => 
+                broker.PostTransactionAsync(It.IsAny<Transaction>()), 
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker => 
+                broker.LogError(It.Is(
+                    SameExceptionAs(expectedDependencyValidationException))), 
+                        Times.Once);
+
+            this.apiBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
