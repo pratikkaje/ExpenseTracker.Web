@@ -101,6 +101,28 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
 
         }
 
+        public static TheoryData DependencyApiExceptions()
+        {
+            string exceptionMessage = GetRandomString();
+            var httpResponseMessage = new HttpResponseMessage();
+
+            var httpResponseInternalServerErrorException =
+                new HttpResponseInternalServerErrorException(
+                    responseMessage: httpResponseMessage,
+                    message: exceptionMessage);
+
+            var httpResponseException = 
+                new HttpResponseException(
+                    httpResponseMessage: httpResponseMessage,
+                    message: exceptionMessage);
+
+            return new TheoryData<Exception>
+            {
+                httpResponseInternalServerErrorException,
+                httpResponseException
+            };
+        }
+
         private static string GetRandomMessage() =>
             new MnemonicString(wordCount: GetRandomNumber()).GetValue();
 

@@ -106,30 +106,25 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddIfServerInternalErrorOccursAndLogItAsync()
+        [Theory]
+        [MemberData(nameof(DependencyApiExceptions))]
+        public async Task ShouldThrowDependencyExceptionOnAddIfServerInternalErrorOccursAndLogItAsync(
+            Exception dependencyApiExceptions)
         {
             // given
             Transaction someTransaction = CreateRandomTransaction();
-            string exceptionMessage = GetRandomString();
-            var httpResponseMessage = new HttpResponseMessage();
-
-            var httpResponseInternalServerErrorException = 
-                new HttpResponseInternalServerErrorException(
-                    responseMessage: httpResponseMessage,
-                    message: exceptionMessage);
 
             var invalidTransactionException =
                 new InvalidTransactionException(
                     message: "Invalid transaction error occurred.",
-                    innerException: httpResponseInternalServerErrorException);
+                    innerException: dependencyApiExceptions);
 
             var expectedTransactionDependencyException =
                 new TransactionDependencyException(invalidTransactionException);
 
             this.apiBrokerMock.Setup(broker => 
                 broker.PostTransactionAsync(It.IsAny<Transaction>()))
-                    .ThrowsAsync(httpResponseInternalServerErrorException);
+                    .ThrowsAsync(dependencyApiExceptions);
 
             // when
             ValueTask<Transaction> addTransactionTask = 
