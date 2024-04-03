@@ -107,7 +107,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker => 
-                broker.LogError(It.Is(
+                broker.LogCritical(It.Is(
                     SameExceptionAs(expectedTransactionDependencyException))), 
                         Times.Once);
 

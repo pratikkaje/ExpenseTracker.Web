@@ -6,6 +6,7 @@
 using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.Transactions.Exceptions;
 using RESTFulSense.Exceptions;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xeptions;
 
@@ -28,6 +29,27 @@ namespace ExpenseTracker.Web.Services.Transactions
             catch (InvalidTransactionException invalidTransactionException)
             {
                 throw CreateAndLogValidationException(invalidTransactionException);
+            }
+            catch (HttpRequestException httpRequestException)
+            {
+                var failedTransactionDependencyException = 
+                    new FailedTransactionDependencyException(httpRequestException);
+
+                throw CreateAndLogCriticalDependencyException(failedTransactionDependencyException);
+            }
+            catch (HttpResponseUrlNotFoundException httpResponseUrlNotFoundException)
+            {
+                var failedTransactionDependencyException =
+                    new FailedTransactionDependencyException(httpResponseUrlNotFoundException);
+
+                throw CreateAndLogCriticalDependencyException(failedTransactionDependencyException);
+            }
+            catch (HttpResponseUnauthorizedException httpResponseUnauthorizedException)
+            {
+                var failedTransactionDependencyException =
+                    new FailedTransactionDependencyException(httpResponseUnauthorizedException);
+
+                throw CreateAndLogCriticalDependencyException(failedTransactionDependencyException);
             }
             catch (HttpResponseBadRequestException httpResponseBadRequestException)
             {
@@ -59,5 +81,16 @@ namespace ExpenseTracker.Web.Services.Transactions
 
             return transactionDependencyValidationException;
         }
+
+        private TransactionDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+        {
+            var transactionDependencyException = 
+                new TransactionDependencyException(exception);
+
+            this.loggingBroker.LogCritical(transactionDependencyException);
+
+            return transactionDependencyException;
+        }
+
     }
 }
