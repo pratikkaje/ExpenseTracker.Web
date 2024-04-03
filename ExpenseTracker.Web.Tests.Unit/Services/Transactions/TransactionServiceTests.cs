@@ -10,6 +10,7 @@ using ExpenseTracker.Web.Services.Transactions;
 using Moq;
 using RESTFulSense.Exceptions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Net.Http;
@@ -67,6 +68,35 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                 httpRequestException,
                 httpResponseUrlNotFoundException,
                 httpResponseUnauthorizedException
+            };
+
+        }
+
+        public static TheoryData ValidationApiException()
+        {
+            string exceptionMessage = GetRandomString();
+            IDictionary randomDictionary = CreateRandomDictionary();
+            IDictionary exceptionData = randomDictionary;
+            var httpResponseMessage = new HttpResponseMessage();
+
+            var httpResponseBadRequestException =
+                new HttpResponseBadRequestException(
+                    responseMessage: httpResponseMessage,
+                    message: exceptionMessage);
+
+            httpResponseBadRequestException.AddData(exceptionData);
+
+            var httpResponseConflictException =
+                new HttpResponseConflictException(
+                    responseMessage: httpResponseMessage, 
+                    message: exceptionMessage);
+
+            httpResponseConflictException.AddData(exceptionData);
+
+            return new TheoryData<Exception>
+            {
+                httpResponseBadRequestException,
+                httpResponseConflictException
             };
 
         }

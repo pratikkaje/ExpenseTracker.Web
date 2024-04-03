@@ -60,6 +60,15 @@ namespace ExpenseTracker.Web.Services.Transactions
 
                 throw CreateAndLogDependencyValidationException(invalidTransactionException);
             }
+            catch (HttpResponseConflictException httpResponseConflictException)
+            {
+                var invalidTransactionException =
+                    new InvalidTransactionException(
+                        innerException: httpResponseConflictException,
+                        data: httpResponseConflictException.Data);
+
+                throw CreateAndLogDependencyValidationException(invalidTransactionException);
+            }
         }
 
         private TransactionValidationException CreateAndLogValidationException(Xeption exception)

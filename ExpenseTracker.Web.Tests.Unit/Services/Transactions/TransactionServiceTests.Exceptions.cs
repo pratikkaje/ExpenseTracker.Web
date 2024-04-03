@@ -16,28 +16,19 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
 {
     public partial class TransactionServiceTests
     {
-        [Fact]
-        public async Task ShouldThrowDependencyValidationExceptionOnAddIfBadRequestErrorOccursAndLogItAsync()
+        [Theory]
+        [MemberData(nameof(ValidationApiException))]
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfBadRequestErrorOccursAndLogItAsync(
+            Exception validationApiException)
         {
             // given
             Transaction someTransaction = CreateRandomTransaction();
-            string exceptionMessage = GetRandomString();
-            IDictionary randomDictionary = CreateRandomDictionary();
-            IDictionary exceptionData = randomDictionary;
-            var httpResponseMessage = new HttpResponseMessage();
-
-            var httpResponseBadRequestException =
-                new HttpResponseBadRequestException(
-                    responseMessage: httpResponseMessage,
-                    message: exceptionMessage);
-
-            httpResponseBadRequestException.AddData(exceptionData);
 
             var invalidTransactionException =
                 new InvalidTransactionException(
                     message: "Invalid transaction error occurred.",
-                    innerException: httpResponseBadRequestException,
-                    data: exceptionData);
+                    innerException: validationApiException,
+                    data: validationApiException.Data);
 
             var expectedTransactionDependencyValidation =
                 new TransactionDependencyValidationException(
@@ -46,7 +37,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
 
             this.apiBrokerMock.Setup(broker =>
                 broker.PostTransactionAsync(It.IsAny<Transaction>()))
-                    .ThrowsAsync(httpResponseBadRequestException);
+                    .ThrowsAsync(validationApiException);
 
             // when
             ValueTask<Transaction> addTransactionTask =
