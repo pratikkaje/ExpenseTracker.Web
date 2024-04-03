@@ -51,15 +51,6 @@ namespace ExpenseTracker.Web.Services.Transactions
 
                 throw CreateAndLogCriticalDependencyException(failedTransactionDependencyException);
             }
-            catch (HttpResponseBadRequestException httpResponseBadRequestException)
-            {
-                var invalidTransactionException =
-                    new InvalidTransactionException(
-                        innerException: httpResponseBadRequestException,
-                        data: httpResponseBadRequestException.Data);
-
-                throw CreateAndLogDependencyValidationException(invalidTransactionException);
-            }
             catch (HttpResponseConflictException httpResponseConflictException)
             {
                 var invalidTransactionException =
@@ -69,6 +60,25 @@ namespace ExpenseTracker.Web.Services.Transactions
 
                 throw CreateAndLogDependencyValidationException(invalidTransactionException);
             }
+            catch (HttpResponseBadRequestException httpResponseBadRequestException)
+            {
+                var invalidTransactionException =
+                    new InvalidTransactionException(
+                        innerException: httpResponseBadRequestException,
+                        data: httpResponseBadRequestException.Data);
+
+                throw CreateAndLogDependencyValidationException(invalidTransactionException);
+            }
+            //catch (HttpResponseInternalServerErrorException httpResponseInternalServerErrorException)
+            //{
+            //    var invalidTransactionException =
+            //        new InvalidTransactionException(
+            //            innerException: httpResponseInternalServerErrorException,
+            //            data: httpResponseInternalServerErrorException.Data);
+
+            //    throw CreateAndLogDependencyValidationException(invalidTransactionException);
+            //}
+
         }
 
         private TransactionValidationException CreateAndLogValidationException(Xeption exception)

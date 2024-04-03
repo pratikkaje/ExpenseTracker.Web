@@ -127,8 +127,8 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                     innerException: httpResponseInternalServerErrorException,
                     data: httpResponseInternalServerErrorException.Data);
 
-            var expectedDependencyValidationException =
-                new TransactionDependencyValidationException(httpResponseInternalServerErrorException);
+            var expectedTransactionDependencyException =
+                new TransactionDependencyException(httpResponseInternalServerErrorException);
 
             this.apiBrokerMock.Setup(broker => 
                 broker.PostTransactionAsync(It.IsAny<Transaction>()))
@@ -138,13 +138,13 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
             ValueTask<Transaction> addTransactionTask = 
                 this.transactionService.AddTransactionAsync(someTransaction);
 
-            TransactionDependencyValidationException actualDependencyValidationException =
-                await Assert.ThrowsAsync<TransactionDependencyValidationException>(() => 
+            TransactionDependencyException actualTransactionDependencyException =
+                await Assert.ThrowsAsync<TransactionDependencyException>(() => 
                     addTransactionTask.AsTask());
 
             // then
-            actualDependencyValidationException.Should()
-                .BeEquivalentTo(expectedDependencyValidationException);
+            actualTransactionDependencyException.Should()
+                .BeEquivalentTo(expectedTransactionDependencyException);
 
             this.apiBrokerMock.Verify(broker => 
                 broker.PostTransactionAsync(It.IsAny<Transaction>()), 
@@ -152,7 +152,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
 
             this.loggingBrokerMock.Verify(broker => 
                 broker.LogError(It.Is(
-                    SameExceptionAs(expectedDependencyValidationException))), 
+                    SameExceptionAs(expectedTransactionDependencyException))), 
                         Times.Once);
 
             this.apiBrokerMock.VerifyNoOtherCalls();
