@@ -19,6 +19,14 @@ namespace ExpenseTracker.Web.Models.Transactions.Exceptions
             : base(message: message)
         { }
 
+        public InvalidTransactionException(Exception innerException)
+            : base(message: "Invalid transaction error occurred.", innerException)
+        { }
+
+        public InvalidTransactionException(string message, Exception innerException)
+            : base(message: message, innerException)
+        { }
+
         public InvalidTransactionException(Exception innerException, IDictionary data)
             : base(message: "Invalid transaction error occurred.", innerException, data)
         { }

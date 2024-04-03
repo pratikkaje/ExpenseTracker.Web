@@ -119,16 +119,13 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                     responseMessage: httpResponseMessage,
                     message: exceptionMessage);
 
-            httpResponseInternalServerErrorException.AddData(exceptionMessage);
-
             var invalidTransactionException =
                 new InvalidTransactionException(
                     message: "Invalid transaction error occurred.",
-                    innerException: httpResponseInternalServerErrorException,
-                    data: httpResponseInternalServerErrorException.Data);
+                    innerException: httpResponseInternalServerErrorException);
 
             var expectedTransactionDependencyException =
-                new TransactionDependencyException(httpResponseInternalServerErrorException);
+                new TransactionDependencyException(invalidTransactionException);
 
             this.apiBrokerMock.Setup(broker => 
                 broker.PostTransactionAsync(It.IsAny<Transaction>()))

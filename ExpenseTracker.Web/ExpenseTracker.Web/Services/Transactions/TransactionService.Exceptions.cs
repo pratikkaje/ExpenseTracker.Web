@@ -69,15 +69,15 @@ namespace ExpenseTracker.Web.Services.Transactions
 
                 throw CreateAndLogDependencyValidationException(invalidTransactionException);
             }
-            //catch (HttpResponseInternalServerErrorException httpResponseInternalServerErrorException)
-            //{
-            //    var invalidTransactionException =
-            //        new InvalidTransactionException(
-            //            innerException: httpResponseInternalServerErrorException,
-            //            data: httpResponseInternalServerErrorException.Data);
+            catch (HttpResponseInternalServerErrorException httpResponseInternalServerErrorException)
+            {
+                var invalidTransactionException =
+                    new InvalidTransactionException(
+                        innerException: httpResponseInternalServerErrorException,
+                        data: httpResponseInternalServerErrorException.Data);
 
-            //    throw CreateAndLogDependencyValidationException(invalidTransactionException);
-            //}
+                throw CreateAndLogDependencyException(invalidTransactionException);
+            }
 
         }
 
@@ -107,6 +107,16 @@ namespace ExpenseTracker.Web.Services.Transactions
                 new TransactionDependencyException(exception);
 
             this.loggingBroker.LogCritical(transactionDependencyException);
+
+            return transactionDependencyException;
+        }
+
+        private TransactionDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var transactionDependencyException =
+                new TransactionDependencyException(exception);
+
+            this.loggingBroker.LogError(transactionDependencyException);
 
             return transactionDependencyException;
         }
