@@ -5,6 +5,7 @@
 
 using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.Transactions.Exceptions;
+using RESTFulSense.Exceptions;
 using System.Threading.Tasks;
 using Xeptions;
 
@@ -28,6 +29,15 @@ namespace ExpenseTracker.Web.Services.Transactions
             {
                 throw CreateAndLogValidationException(invalidTransactionException);
             }
+            catch (HttpResponseBadRequestException httpResponseBadRequestException)
+            {
+                var invalidTransactionException =
+                    new InvalidTransactionException(
+                        innerException: httpResponseBadRequestException,
+                        data: httpResponseBadRequestException.Data);
+
+                throw CreateAndLogDependencyValidationException(invalidTransactionException);
+            }
         }
 
         private TransactionValidationException CreateAndLogValidationException(Xeption exception)
@@ -38,6 +48,16 @@ namespace ExpenseTracker.Web.Services.Transactions
             this.loggingBroker.LogError(transactionValidationException);
 
             return transactionValidationException;
+        }
+
+        private TransactionDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var transactionDependencyValidationException =
+                new TransactionDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(transactionDependencyValidationException);
+
+            return transactionDependencyValidationException;
         }
     }
 }
