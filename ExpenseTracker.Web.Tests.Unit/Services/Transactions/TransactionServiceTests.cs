@@ -8,9 +8,11 @@ using ExpenseTracker.Web.Brokers.Logging;
 using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Services.Transactions;
 using Moq;
+using RESTFulSense.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using Tynamix.ObjectFiller;
 using Xeptions;
 
@@ -42,6 +44,38 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
 
             return filler.Create();
         }
+
+        public static TheoryData CriticalDependencyException()
+        {
+            string exceptionMessage = GetRandomMessage();
+            var httpResponseMessage = new HttpResponseMessage();
+
+            var httpRequestException = new HttpRequestException();
+
+            var httpResponseUrlNotFoundException =
+                new HttpResponseUrlNotFoundException(
+                    responseMessage: httpResponseMessage,
+                    message: exceptionMessage);
+
+            var httpResponseUnauthorizedException = 
+                new HttpResponseUnauthorizedException(
+                    responseMessage: httpResponseMessage,
+                    message: exceptionMessage);
+
+            return new TheoryData<Exception>
+            {
+                httpRequestException,
+                httpResponseUrlNotFoundException,
+                httpResponseUnauthorizedException
+            };
+
+        }
+
+        private static string GetRandomMessage() =>
+            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
             actualException => actualException.SameExceptionAs(expectedException);
