@@ -9,6 +9,7 @@ using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Services.Transactions;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Tynamix.ObjectFiller;
 using Xeptions;
@@ -30,6 +31,16 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                 apiBroker: this.apiBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object
                 );
+        }
+
+        private static string GetRandomString() =>
+            new MnemonicString().GetValue();
+
+        private static Dictionary<String, List<string>> CreateRandomDictionary()
+        {
+            var filler = new Filler<Dictionary<string, List<string>>>();
+
+            return filler.Create();
         }
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
