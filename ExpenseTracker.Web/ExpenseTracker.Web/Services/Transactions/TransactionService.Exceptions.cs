@@ -6,6 +6,7 @@
 using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.Transactions.Exceptions;
 using RESTFulSense.Exceptions;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xeptions;
@@ -83,6 +84,13 @@ namespace ExpenseTracker.Web.Services.Transactions
 
                 throw CreateAndLogDependencyException(invalidTransactionException);
             }
+            catch(Exception exception)
+            {
+                var failedTransactionServiceException = 
+                    new FailedTransactionServiceException(exception);
+
+                throw CreateAndLogServiceException(failedTransactionServiceException);
+            }
 
         }
 
@@ -126,5 +134,14 @@ namespace ExpenseTracker.Web.Services.Transactions
             return transactionDependencyException;
         }
 
+        private TransactionServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var transactionServiceException = 
+                new TransactionServiceException(exception);
+
+            this.loggingBroker.LogError(transactionServiceException);
+
+            return transactionServiceException;
+        }
     }
 }
