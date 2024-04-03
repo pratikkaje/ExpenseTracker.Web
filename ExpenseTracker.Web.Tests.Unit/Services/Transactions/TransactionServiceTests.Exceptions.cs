@@ -108,7 +108,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
 
         [Theory]
         [MemberData(nameof(DependencyApiExceptions))]
-        public async Task ShouldThrowDependencyExceptionOnAddIfServerInternalErrorOccursAndLogItAsync(
+        public async Task ShouldThrowDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
             Exception dependencyApiExceptions)
         {
             // given

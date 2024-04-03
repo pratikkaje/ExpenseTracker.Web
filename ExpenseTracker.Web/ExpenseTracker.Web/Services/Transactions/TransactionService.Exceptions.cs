@@ -72,9 +72,14 @@ namespace ExpenseTracker.Web.Services.Transactions
             catch (HttpResponseInternalServerErrorException httpResponseInternalServerErrorException)
             {
                 var invalidTransactionException =
-                    new InvalidTransactionException(
-                        innerException: httpResponseInternalServerErrorException,
-                        data: httpResponseInternalServerErrorException.Data);
+                    new InvalidTransactionException(httpResponseInternalServerErrorException);
+
+                throw CreateAndLogDependencyException(invalidTransactionException);
+            }
+            catch (HttpResponseException httpResponseException)
+            {
+                var invalidTransactionException =
+                    new InvalidTransactionException(httpResponseException);
 
                 throw CreateAndLogDependencyException(invalidTransactionException);
             }
