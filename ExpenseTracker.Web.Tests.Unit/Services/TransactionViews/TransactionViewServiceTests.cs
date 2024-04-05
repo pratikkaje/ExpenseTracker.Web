@@ -35,7 +35,8 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
             var compareconfig = new ComparisonConfig();
             compareconfig.IgnoreProperty<Transaction>(transaction => transaction.Id);
-            this.compareLogic = new CompareLogic();
+            compareconfig.IgnoreProperty<Transaction>(transaction => transaction.UserId);
+            this.compareLogic = new CompareLogic(compareconfig);
 
             this.transactionViewService = new TransactionViewService(
                 transactionService: this.transactionServiceMock.Object,
