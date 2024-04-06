@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.Web.Brokers.DateTime;
 using ExpenseTracker.Web.Brokers.Logging;
 using ExpenseTracker.Web.Models.Transactions;
+using ExpenseTracker.Web.Models.TransactionViews;
 using ExpenseTracker.Web.Services.Transactions;
 using ExpenseTracker.Web.Services.TransactionViews;
 using ExpenseTracker.Web.Services.Users;
@@ -15,6 +16,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
 {
@@ -65,7 +67,10 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
         }
 
         private Expression<Func<Transaction,bool>> SameTransactionAs(Transaction expectedTransaction) => 
-            actualTransaction => this.compareLogic.Compare(expectedTransaction, actualTransaction).AreEqual;            
+            actualTransaction => this.compareLogic.Compare(expectedTransaction, actualTransaction).AreEqual;
+
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
+            actualException => actualException.SameExceptionAs(expectedException);
 
         private static string GetRandomString() =>
             new MnemonicString().GetValue();
@@ -75,6 +80,20 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private static TransactionView CreateRandomTransaction() =>
+            CreateTransactionViewFiller().Create();
+
+        private static Filler<TransactionView> CreateTransactionViewFiller()
+        {
+            var filler = new Filler<TransactionView>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
+
+            return filler;
+        }
+
 
     }
 }
