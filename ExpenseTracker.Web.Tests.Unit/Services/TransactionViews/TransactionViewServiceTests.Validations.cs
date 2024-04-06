@@ -13,12 +13,60 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
 {
     public partial class TransactionViewServiceTests
     {
+        [Fact]
+        public async Task ShouldthrowValidationExceptionOnAddIfTransactionViewIsNullAndLogItAsync()
+        {
+            // given
+            TransactionView nullTransactionView = null;
+
+            var nullTransactionViewException =
+                new NullTransactionViewException(message: "Null transaction view error occurred.");
+
+            var expectedTransactionViewValidationException = 
+                new TransactionViewValidationException(nullTransactionViewException);
+
+            // when
+            ValueTask<TransactionView> addTransactionViewTask = 
+                this.transactionViewService.AddTransactionViewAsync(nullTransactionView);
+
+            // then
+            var actualTransactionViewValidation = 
+                await Assert.ThrowsAsync<TransactionViewValidationException>(() => 
+                    addTransactionViewTask.AsTask());
+
+            actualTransactionViewValidation.Should()
+                .BeEquivalentTo(expectedTransactionViewValidationException);
+
+            this.loggingBrokerMock.Verify(broker => 
+                broker.LogError(It.Is(
+                    SameExceptionAs(expectedTransactionViewValidationException))), 
+                        Times.Once);
+
+            this.userServiceMock.Verify(service => 
+                service.GetCurrentlyLoggedInUser(), 
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker => 
+                broker.GetCurrentDateTime(), 
+                    Times.Once);
+
+            this.transactionServiceMock.Verify(service => 
+                service.AddTransactionAsync(It.IsAny<Transaction>()), 
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.userServiceMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.transactionServiceMock.VerifyNoOtherCalls();
+        }
+
+
         [Theory]
         [InlineData("")]
         [InlineData(" ")]
         [InlineData("   ")]
         [InlineData(null)]
-        public async Task ShouldThrowValidationExceptionOnAddIfTransactionIsInvalidAndLogItAsync(string invalidText)
+        public async Task ShouldThrowValidationExceptionOnAddIfTransactionViewIsInvalidAndLogItAsync(string invalidText)
         {
             // given
             TransactionView invalidTransactionView = new TransactionView
