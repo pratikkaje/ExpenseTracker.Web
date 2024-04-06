@@ -124,12 +124,12 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
         {
             // given
             TransactionView someTransactionView = CreateRandomTransactionView();
-            Exception serviceException = new Exception();
+            var serviceException = new Exception();
 
             var expectedTransactionViewServiceException =
                 new TransactionViewServiceException(
                     message: "Transaction view service error occurred, contact support.",
-                    serviceException);
+                    innerException: serviceException);
 
             this.userServiceMock.Setup(service =>
                 service.GetCurrentlyLoggedInUser())

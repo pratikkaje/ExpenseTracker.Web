@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.Web.Models.Transactions.Exceptions;
 using ExpenseTracker.Web.Models.TransactionViews;
 using ExpenseTracker.Web.Models.TransactionViews.Exceptions;
+using System;
 using System.Threading.Tasks;
 using Xeptions;
 
@@ -40,6 +41,10 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             {
                 throw CreateAndLogDependencyException(transactionServiceException);
             }
+            catch (Exception serviceException)
+            {
+                throw CreateAndLogServiceException(serviceException);
+            }
         }
 
         private TransactionViewValidationException CreateAndLogValidationException(Xeption exception)
@@ -70,6 +75,16 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             this.loggingBroker.LogError(transactionViewDependencyException);
 
             return transactionViewDependencyException;
+        }
+
+        private TransactionViewServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var transactionViewServiceException 
+                = new TransactionViewServiceException(exception);
+
+            this.loggingBroker.LogError(transactionViewServiceException);
+
+            return transactionViewServiceException;
         }
     }
 }
