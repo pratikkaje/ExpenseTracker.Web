@@ -1,12 +1,14 @@
 ﻿using ExpenseTracker.Web.Brokers.DateTime;
 using ExpenseTracker.Web.Brokers.Logging;
 using ExpenseTracker.Web.Models.Transactions;
+using ExpenseTracker.Web.Models.Transactions.Exceptions;
 using ExpenseTracker.Web.Models.TransactionViews;
 using ExpenseTracker.Web.Services.Transactions;
 using ExpenseTracker.Web.Services.TransactionViews;
 using ExpenseTracker.Web.Services.Users;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -66,6 +68,22 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             };
         }
 
+        public static TheoryData TransactionServiceValidationException()
+        {
+            var innerException = new Xeption();
+
+            return new TheoryData<Exception>
+            {
+                new TransactionValidationException(
+                    message: "Transaction Validation Error Occurred, try again.",
+                    innerException),
+
+                new TransactionDependencyValidationException(
+                    message:"Transaction dependency validation error occurred, please try again.",
+                    innerException)
+            };
+        }
+
         private Expression<Func<Transaction,bool>> SameTransactionAs(Transaction expectedTransaction) => 
             actualTransaction => this.compareLogic.Compare(expectedTransaction, actualTransaction).AreEqual;
 
@@ -81,7 +99,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static TransactionView CreateRandomTransaction() =>
+        private static TransactionView CreateRandomTransactionView() =>
             CreateTransactionViewFiller().Create();
 
         private static Filler<TransactionView> CreateTransactionViewFiller()
@@ -93,7 +111,5 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
 
             return filler;
         }
-
-
     }
 }
