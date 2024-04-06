@@ -24,6 +24,14 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             {
                 throw CreateAndLogValidationException(invalidTransactionViewException);
             }
+            catch(TransactionValidationException transactionValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(transactionValidationException);
+            }
+            catch (TransactionDependencyValidationException transactionDependencyValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(transactionDependencyValidationException);
+            }
         }
 
         private TransactionViewValidationException CreateAndLogValidationException(Xeption exception)
@@ -36,6 +44,15 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             return transactionViewValidationException;
         }
 
+        private TransactionViewDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var transactionViewDependencyValidationException = 
+                new TransactionViewDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(transactionViewDependencyValidationException);
+
+            return transactionViewDependencyValidationException;
+        }
 
     }
 }
