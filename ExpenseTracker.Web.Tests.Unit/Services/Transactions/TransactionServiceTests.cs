@@ -58,7 +58,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                     responseMessage: httpResponseMessage,
                     message: exceptionMessage);
 
-            var httpResponseUnauthorizedException = 
+            var httpResponseUnauthorizedException =
                 new HttpResponseUnauthorizedException(
                     responseMessage: httpResponseMessage,
                     message: exceptionMessage);
@@ -88,7 +88,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
 
             var httpResponseConflictException =
                 new HttpResponseConflictException(
-                    responseMessage: httpResponseMessage, 
+                    responseMessage: httpResponseMessage,
                     message: exceptionMessage);
 
             httpResponseConflictException.AddData(exceptionData);
@@ -111,7 +111,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                     responseMessage: httpResponseMessage,
                     message: exceptionMessage);
 
-            var httpResponseException = 
+            var httpResponseException =
                 new HttpResponseException(
                     httpResponseMessage: httpResponseMessage,
                     message: exceptionMessage);

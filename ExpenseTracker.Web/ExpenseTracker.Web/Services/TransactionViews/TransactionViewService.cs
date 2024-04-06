@@ -1,4 +1,9 @@
-﻿using ExpenseTracker.Web.Brokers.DateTime;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using ExpenseTracker.Web.Brokers.DateTime;
 using ExpenseTracker.Web.Brokers.Logging;
 using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.TransactionViews;
@@ -29,7 +34,8 @@ namespace ExpenseTracker.Web.Services.TransactionViews
         }
 
         public ValueTask<TransactionView> AddTransactionViewAsync(TransactionView transactionView) =>
-            TryCatch(async () => {
+            TryCatch(async () =>
+            {
                 ValidateTransactionViewOnAdd(transactionView);
                 Transaction transaction = MapToTransactionView(transactionView);
                 await this.transactionService.AddTransactionAsync(transaction);

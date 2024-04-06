@@ -40,7 +40,7 @@ internal class Program
         builder.Services
             .AddScoped<ITransactionService, TransactionService>()
             .AddScoped<ITransactionViewService, TransactionViewService>()
-            .AddScoped<IUserService,UserService>();
+            .AddScoped<IUserService, UserService>();
 
         var app = builder.Build();
 

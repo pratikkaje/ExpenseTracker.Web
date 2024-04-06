@@ -1,4 +1,8 @@
-﻿using ExpenseTracker.Web.Models.Transactions.Exceptions;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
 using ExpenseTracker.Web.Models.TransactionViews;
 using ExpenseTracker.Web.Models.TransactionViews.Exceptions;
 using System;

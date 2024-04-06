@@ -33,7 +33,7 @@ namespace ExpenseTracker.Web.Services.Transactions
             }
             catch (HttpRequestException httpRequestException)
             {
-                var failedTransactionDependencyException = 
+                var failedTransactionDependencyException =
                     new FailedTransactionDependencyException(httpRequestException);
 
                 throw CreateAndLogCriticalDependencyException(failedTransactionDependencyException);
@@ -84,9 +84,9 @@ namespace ExpenseTracker.Web.Services.Transactions
 
                 throw CreateAndLogDependencyException(invalidTransactionException);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
-                var failedTransactionServiceException = 
+                var failedTransactionServiceException =
                     new FailedTransactionServiceException(exception);
 
                 throw CreateAndLogServiceException(failedTransactionServiceException);
@@ -116,7 +116,7 @@ namespace ExpenseTracker.Web.Services.Transactions
 
         private TransactionDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
-            var transactionDependencyException = 
+            var transactionDependencyException =
                 new TransactionDependencyException(exception);
 
             this.loggingBroker.LogCritical(transactionDependencyException);
@@ -136,7 +136,7 @@ namespace ExpenseTracker.Web.Services.Transactions
 
         private TransactionServiceException CreateAndLogServiceException(Xeption exception)
         {
-            var transactionServiceException = 
+            var transactionServiceException =
                 new TransactionServiceException(exception);
 
             this.loggingBroker.LogError(transactionServiceException);

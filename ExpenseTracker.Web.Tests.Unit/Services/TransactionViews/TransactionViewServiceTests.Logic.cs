@@ -1,11 +1,13 @@
-﻿using ExpenseTracker.Web.Models.Transactions;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.TransactionViews;
 using FluentAssertions;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
@@ -54,21 +56,21 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             Transaction expectedInputTransaction = randomTransaction;
             Transaction returnedTransaction = expectedInputTransaction;
 
-            this.userServiceMock.Setup(service => 
+            this.userServiceMock.Setup(service =>
                 service.GetCurrentlyLoggedInUser())
                     .Returns(randomUserId);
 
-            this.dateTimeBrokerMock.Setup(broker => 
+            this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(randomDateTime);
 
-            this.transactionServiceMock.Setup(service => 
+            this.transactionServiceMock.Setup(service =>
                 service.AddTransactionAsync(It.Is(
                     SameTransactionAs(expectedInputTransaction))))
                         .ReturnsAsync(returnedTransaction);
 
             // when
-            var actualTransactionView = 
+            var actualTransactionView =
                 await this.transactionViewService.AddTransactionViewAsync(inputTransactionView);
 
             // then
@@ -76,16 +78,16 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
                 .BeEquivalentTo(expectedTransactionView);
 
             this.userServiceMock.Verify(service =>
-                service.GetCurrentlyLoggedInUser(), 
+                service.GetCurrentlyLoggedInUser(),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(), 
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.transactionServiceMock.Verify(service =>
                 service.AddTransactionAsync(It.Is(
-                    SameTransactionAs(expectedInputTransaction))), 
+                    SameTransactionAs(expectedInputTransaction))),
                         Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

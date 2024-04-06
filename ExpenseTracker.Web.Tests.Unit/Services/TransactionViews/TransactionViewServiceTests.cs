@@ -1,4 +1,9 @@
-﻿using ExpenseTracker.Web.Brokers.DateTime;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using ExpenseTracker.Web.Brokers.DateTime;
 using ExpenseTracker.Web.Brokers.Logging;
 using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.Transactions.Exceptions;
@@ -7,16 +12,9 @@ using ExpenseTracker.Web.Services.Transactions;
 using ExpenseTracker.Web.Services.TransactionViews;
 using ExpenseTracker.Web.Services.Users;
 using KellermanSoftware.CompareNetObjects;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Tynamix.ObjectFiller;
 using Xeptions;
 
@@ -100,7 +98,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             };
         }
 
-        private Expression<Func<Transaction,bool>> SameTransactionAs(Transaction expectedTransaction) => 
+        private Expression<Func<Transaction, bool>> SameTransactionAs(Transaction expectedTransaction) =>
             actualTransaction => this.compareLogic.Compare(expectedTransaction, actualTransaction).AreEqual;
 
         //private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>

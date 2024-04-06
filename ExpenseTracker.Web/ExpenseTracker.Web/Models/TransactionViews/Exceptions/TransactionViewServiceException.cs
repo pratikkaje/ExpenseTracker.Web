@@ -1,4 +1,9 @@
-﻿using System;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using System;
 using Xeptions;
 
 namespace ExpenseTracker.Web.Models.TransactionViews.Exceptions
@@ -9,7 +14,7 @@ namespace ExpenseTracker.Web.Models.TransactionViews.Exceptions
             : base(message: "Transaction view service error occurred, contact support.", innerException)
         { }
 
-        public TransactionViewServiceException(string message,Exception innerException)
+        public TransactionViewServiceException(string message, Exception innerException)
             : base(message: message, innerException)
         { }
     }

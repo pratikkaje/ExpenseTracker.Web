@@ -1,12 +1,13 @@
-﻿using ExpenseTracker.Web.Models.Transactions;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.TransactionViews;
 using ExpenseTracker.Web.Models.TransactionViews.Exceptions;
 using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
@@ -22,36 +23,36 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             var nullTransactionViewException =
                 new NullTransactionViewException(message: "Null transaction view error occurred.");
 
-            var expectedTransactionViewValidationException = 
+            var expectedTransactionViewValidationException =
                 new TransactionViewValidationException(nullTransactionViewException);
 
             // when
-            ValueTask<TransactionView> addTransactionViewTask = 
+            ValueTask<TransactionView> addTransactionViewTask =
                 this.transactionViewService.AddTransactionViewAsync(nullTransactionView);
 
             // then
-            var actualTransactionViewValidation = 
-                await Assert.ThrowsAsync<TransactionViewValidationException>(() => 
+            var actualTransactionViewValidation =
+                await Assert.ThrowsAsync<TransactionViewValidationException>(() =>
                     addTransactionViewTask.AsTask());
 
             actualTransactionViewValidation.Should()
                 .BeEquivalentTo(expectedTransactionViewValidationException);
 
-            this.loggingBrokerMock.Verify(broker => 
+            this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
-                    SameExceptionAs(expectedTransactionViewValidationException))), 
+                    SameExceptionAs(expectedTransactionViewValidationException))),
                         Times.Once);
 
-            this.userServiceMock.Verify(service => 
-                service.GetCurrentlyLoggedInUser(), 
+            this.userServiceMock.Verify(service =>
+                service.GetCurrentlyLoggedInUser(),
                     Times.Never);
 
-            this.dateTimeBrokerMock.Verify(broker => 
-                broker.GetCurrentDateTime(), 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.transactionServiceMock.Verify(service => 
-                service.AddTransactionAsync(It.IsAny<Transaction>()), 
+            this.transactionServiceMock.Verify(service =>
+                service.AddTransactionAsync(It.IsAny<Transaction>()),
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -76,11 +77,11 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
                 Description = invalidText
             };
 
-            var invalidTransactionViewException = 
+            var invalidTransactionViewException =
                 new InvalidTransactionViewException(message: "Invalid transaction view error occured, try again.");
 
             invalidTransactionViewException.AddData(
-                key: nameof(TransactionView.Category), 
+                key: nameof(TransactionView.Category),
                 values: "Text is required.");
 
             invalidTransactionViewException.AddData(
@@ -95,16 +96,16 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
                 key: nameof(TransactionView.Amount),
                 values: "Value is required.");
 
-            var expectedTransactionViewValidationException = 
+            var expectedTransactionViewValidationException =
                 new TransactionViewValidationException(invalidTransactionViewException);
 
             // when
-            ValueTask<TransactionView> addTransactionViewTask = 
+            ValueTask<TransactionView> addTransactionViewTask =
                 this.transactionViewService.AddTransactionViewAsync(invalidTransactionView);
 
             // then
-            var actualTransactionViewException = 
-                await Assert.ThrowsAsync<TransactionViewValidationException>(() => 
+            var actualTransactionViewException =
+                await Assert.ThrowsAsync<TransactionViewValidationException>(() =>
                     addTransactionViewTask.AsTask());
 
             actualTransactionViewException.Should()
@@ -115,17 +116,17 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
                     SameExceptionAs(expectedTransactionViewValidationException))),
                         Times.Once);
 
-            this.userServiceMock.Verify(service => 
-                service.GetCurrentlyLoggedInUser(), 
+            this.userServiceMock.Verify(service =>
+                service.GetCurrentlyLoggedInUser(),
                     Times.Never);
 
-            this.dateTimeBrokerMock.Verify(broker => 
-                broker.GetCurrentDateTime(), 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.transactionServiceMock.Verify(service => 
+            this.transactionServiceMock.Verify(service =>
                 service.AddTransactionAsync(
-                    It.IsAny<Transaction>()), 
+                    It.IsAny<Transaction>()),
                         Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();

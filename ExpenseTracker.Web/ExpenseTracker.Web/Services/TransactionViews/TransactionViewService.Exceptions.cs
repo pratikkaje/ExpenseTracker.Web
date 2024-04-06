@@ -1,4 +1,9 @@
-﻿using ExpenseTracker.Web.Models.Transactions.Exceptions;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using ExpenseTracker.Web.Models.Transactions.Exceptions;
 using ExpenseTracker.Web.Models.TransactionViews;
 using ExpenseTracker.Web.Models.TransactionViews.Exceptions;
 using System;
@@ -25,7 +30,7 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             {
                 throw CreateAndLogValidationException(invalidTransactionViewException);
             }
-            catch(TransactionValidationException transactionValidationException)
+            catch (TransactionValidationException transactionValidationException)
             {
                 throw CreateAndLogDependencyValidationException(transactionValidationException);
             }
@@ -59,7 +64,7 @@ namespace ExpenseTracker.Web.Services.TransactionViews
 
         private TransactionViewDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
         {
-            var transactionViewDependencyValidationException = 
+            var transactionViewDependencyValidationException =
                 new TransactionViewDependencyValidationException(exception);
 
             this.loggingBroker.LogError(transactionViewDependencyValidationException);
@@ -69,7 +74,7 @@ namespace ExpenseTracker.Web.Services.TransactionViews
 
         private TransactionViewDependencyException CreateAndLogDependencyException(Xeption exception)
         {
-            var transactionViewDependencyException = 
+            var transactionViewDependencyException =
                 new TransactionViewDependencyException(exception);
 
             this.loggingBroker.LogError(transactionViewDependencyException);
@@ -79,7 +84,7 @@ namespace ExpenseTracker.Web.Services.TransactionViews
 
         private TransactionViewServiceException CreateAndLogServiceException(Exception exception)
         {
-            var transactionViewServiceException 
+            var transactionViewServiceException
                 = new TransactionViewServiceException(exception);
 
             this.loggingBroker.LogError(transactionViewServiceException);
