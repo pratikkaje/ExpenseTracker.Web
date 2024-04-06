@@ -60,6 +60,7 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedTransactionViewDependencyValidationException))), 
                         Times.Once);
+
             this.userServiceMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.transactionServiceMock.VerifyNoOtherCalls();
@@ -111,6 +112,58 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedTransactionViewDependencyException))),
                         Times.Once);
+
+            this.userServiceMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.transactionServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            TransactionView someTransactionView = CreateRandomTransactionView();
+            Exception serviceException = new Exception();
+
+            var expectedTransactionViewServiceException =
+                new TransactionViewServiceException(
+                    message: "Transaction view service error occurred, contact support.",
+                    serviceException);
+
+            this.userServiceMock.Setup(service =>
+                service.GetCurrentlyLoggedInUser())
+                    .Throws(serviceException);
+
+            // when
+            ValueTask<TransactionView> addTransactionTask =
+                this.transactionViewService.AddTransactionViewAsync(someTransactionView);
+
+            // then
+            var actualTransactionViewServiceException =
+                await Assert.ThrowsAsync<TransactionViewServiceException>(() =>
+                    addTransactionTask.AsTask());
+
+            actualTransactionViewServiceException.Should()
+                .BeEquivalentTo(expectedTransactionViewServiceException);
+
+            this.userServiceMock.Verify(service =>
+                service.GetCurrentlyLoggedInUser(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTransactionViewServiceException))),
+                        Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.transactionServiceMock.Verify(service =>
+                service.AddTransactionAsync(It.IsAny<Transaction>()),
+                    Times.Never);
+
             this.userServiceMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.transactionServiceMock.VerifyNoOtherCalls();
