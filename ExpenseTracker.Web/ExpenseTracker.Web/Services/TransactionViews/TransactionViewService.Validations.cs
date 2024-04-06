@@ -9,12 +9,22 @@ namespace ExpenseTracker.Web.Services.TransactionViews
     {
         public void ValidateTransactionViewOnAdd(TransactionView transactionView)
         {
+            ValidateTransactionViewIsNotNull(transactionView);
+
             Validate(
             (Rule: IsInvalid(transactionView.Category), Parameter: nameof(transactionView.Category)),
             (Rule: IsInvalid(transactionView.Description), Parameter: nameof(transactionView.Description)),
             (Rule: IsInvalid(transactionView.PaymentMode), Parameter: nameof(transactionView.PaymentMode)),
             (Rule: IsInvalid(transactionView.Amount), Parameter: nameof(transactionView.Amount))
                 );
+        }
+
+        private static void ValidateTransactionViewIsNotNull(TransactionView transactionView)
+        {
+            if (transactionView == null)
+            {
+                throw new NullTransactionViewException();
+            }
         }
 
         private static dynamic IsInvalid(string text) => new

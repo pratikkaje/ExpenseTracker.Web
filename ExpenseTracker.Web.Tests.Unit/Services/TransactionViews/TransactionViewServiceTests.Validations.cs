@@ -44,11 +44,11 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
 
             this.userServiceMock.Verify(service => 
                 service.GetCurrentlyLoggedInUser(), 
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.Verify(broker => 
                 broker.GetCurrentDateTime(), 
-                    Times.Once);
+                    Times.Never);
 
             this.transactionServiceMock.Verify(service => 
                 service.AddTransactionAsync(It.IsAny<Transaction>()), 

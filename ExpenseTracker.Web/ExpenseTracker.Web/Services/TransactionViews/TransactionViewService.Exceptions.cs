@@ -16,6 +16,10 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             {
                 return await returningTransactionViewFunction();
             }
+            catch (NullTransactionViewException nullTransactionViewException)
+            {
+                throw CreateAndLogValidationException(nullTransactionViewException);
+            }
             catch (InvalidTransactionViewException invalidTransactionViewException)
             {
                 throw CreateAndLogValidationException(invalidTransactionViewException);
