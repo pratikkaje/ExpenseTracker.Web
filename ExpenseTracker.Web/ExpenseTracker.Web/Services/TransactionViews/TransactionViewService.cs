@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Web.Services.TransactionViews
 {
-    public class TransactionViewService : ITransactionViewService
+    public partial class TransactionViewService : ITransactionViewService
     {
         private readonly ITransactionService transactionService;
         private readonly IUserService userService;
@@ -28,13 +28,14 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<TransactionView> AddTransactionViewAsync(TransactionView transactionView)
-        {
-            Transaction transaction = MapToTransactionView(transactionView);
-            await this.transactionService.AddTransactionAsync(transaction);
+        public ValueTask<TransactionView> AddTransactionViewAsync(TransactionView transactionView) =>
+            TryCatch(async () => {
+                ValidateTransactionViewOnAdd(transactionView);
+                Transaction transaction = MapToTransactionView(transactionView);
+                await this.transactionService.AddTransactionAsync(transaction);
 
-            return transactionView;
-        }
+                return transactionView;
+            });
 
         private Transaction MapToTransactionView(TransactionView transactionView)
         {

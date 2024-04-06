@@ -43,6 +43,10 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
                 key: nameof(TransactionView.Description),
                 values: "Text is required.");
 
+            invalidTransactionViewException.AddData(
+                key: nameof(TransactionView.Amount),
+                values: "Value is required.");
+
             var expectedTransactionViewValidationException = 
                 new TransactionViewValidationException(invalidTransactionViewException);
 
