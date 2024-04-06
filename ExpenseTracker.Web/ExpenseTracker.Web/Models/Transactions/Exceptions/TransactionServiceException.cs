@@ -5,7 +5,7 @@ namespace ExpenseTracker.Web.Models.Transactions.Exceptions
     public class TransactionServiceException : Xeption
     {
         public TransactionServiceException(Xeption innerException)
-            : base(message: "Transaction service error occured.", innerException)
+            : base(message: "Transaction service error occured, contact support.", innerException)
         { }
 
         public TransactionServiceException(string message, Xeption innerException)

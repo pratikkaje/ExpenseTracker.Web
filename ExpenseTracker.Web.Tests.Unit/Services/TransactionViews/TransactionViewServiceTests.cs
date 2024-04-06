@@ -84,6 +84,22 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             };
         }
 
+        public static TheoryData TransactionServiceDependencyException()
+        {
+            var innerException = new Xeption();
+
+            return new TheoryData<Exception>
+            {
+                new TransactionDependencyException(
+                    message: "Transaction dependency error occurred, contact support.",
+                    innerException),
+
+                new TransactionServiceException(
+                    message:"Transaction service error occured, contact support.",
+                    innerException)
+            };
+        }
+
         private Expression<Func<Transaction,bool>> SameTransactionAs(Transaction expectedTransaction) => 
             actualTransaction => this.compareLogic.Compare(expectedTransaction, actualTransaction).AreEqual;
 
