@@ -8,6 +8,8 @@ using ExpenseTracker.Web.Brokers.DateTime;
 using ExpenseTracker.Web.Brokers.Logging;
 using ExpenseTracker.Web.Models.Configurations;
 using ExpenseTracker.Web.Services.Transactions;
+using ExpenseTracker.Web.Services.TransactionViews;
+using ExpenseTracker.Web.Services.Users;
 using ExpenseTracker.Web.Views;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -35,7 +37,10 @@ internal class Program
             .AddScoped<ILoggingBroker, LoggingBroker>()
             .AddScoped<IDateTimeBroker, DateTimeBroker>();
 
-        builder.Services.AddScoped<ITransactionService, TransactionService>();
+        builder.Services
+            .AddScoped<ITransactionService, TransactionService>()
+            .AddScoped<ITransactionViewService, TransactionViewService>()
+            .AddScoped<IUserService, UserService>();
 
         var app = builder.Build();
 

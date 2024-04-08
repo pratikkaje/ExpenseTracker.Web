@@ -1,15 +1,13 @@
-﻿using ExpenseTracker.Web.Models.Transactions;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.Transactions.Exceptions;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
-using RESTFulSense.Exceptions;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
@@ -163,32 +161,32 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.Transactions
                     message: "Failed transaction service error occured.",
                     innerException: serviceException);
 
-            var expectedTransactionServiceException = 
+            var expectedTransactionServiceException =
                 new TransactionServiceException(failedTransactionServiceException);
 
-            this.apiBrokerMock.Setup(broker => 
+            this.apiBrokerMock.Setup(broker =>
                 broker.PostTransactionAsync(It.IsAny<Transaction>()))
                     .ThrowsAsync(serviceException);
 
             // when
-            ValueTask<Transaction> addTransactionTask = 
+            ValueTask<Transaction> addTransactionTask =
                 this.transactionService.AddTransactionAsync(someTransaction);
 
             // then
-            TransactionServiceException actualTransactionServiceException = 
-                await Assert.ThrowsAsync<TransactionServiceException>(() => 
+            TransactionServiceException actualTransactionServiceException =
+                await Assert.ThrowsAsync<TransactionServiceException>(() =>
                     addTransactionTask.AsTask());
 
             actualTransactionServiceException.Should()
                 .BeEquivalentTo(expectedTransactionServiceException);
 
-            this.apiBrokerMock.Verify(broker => 
-                broker.PostTransactionAsync(It.IsAny<Transaction>()), 
+            this.apiBrokerMock.Verify(broker =>
+                broker.PostTransactionAsync(It.IsAny<Transaction>()),
                     Times.Once);
 
-            this.loggingBrokerMock.Verify(broker => 
+            this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
-                    SameExceptionAs(expectedTransactionServiceException))), 
+                    SameExceptionAs(expectedTransactionServiceException))),
                         Times.Once);
 
             this.apiBrokerMock.VerifyNoOtherCalls();
