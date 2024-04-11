@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RESTFulSense.Clients;
+using Syncfusion.Blazor;
 using System;
 
 internal class Program
@@ -25,9 +26,15 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        Syncfusion.Licensing.SyncfusionLicenseProvider
+            .RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCekx3TXxbf1x0ZFRHalhYTnReUiweQnxTdEFjXX5fcXVRT2JdVEJzWw==");
+
+
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
-            .AddInteractiveWebAssemblyComponents();
+            .AddInteractiveWebAssemblyComponents();           
+
+        builder.Services.AddSyncfusionBlazor();
 
         AddHttpClient(builder);
 

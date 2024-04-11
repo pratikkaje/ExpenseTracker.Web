@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpenseTracker.Web", "Expen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpenseTracker.Web.Client", "ExpenseTracker.Web\ExpenseTracker.Web.Client\ExpenseTracker.Web.Client.csproj", "{164C4D02-F02D-4E6C-A051-581089342755}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpenseTracker.Web.Tests.Unit", "ExpenseTracker.Web.Tests.Unit\ExpenseTracker.Web.Tests.Unit.csproj", "{836C17AA-98C8-4BCB-8658-29C1296D69F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpenseTracker.Web.Tests.Unit", "ExpenseTracker.Web.Tests.Unit\ExpenseTracker.Web.Tests.Unit.csproj", "{836C17AA-98C8-4BCB-8658-29C1296D69F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
