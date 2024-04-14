@@ -1,0 +1,20 @@
+﻿@rendermode InteractiveServer
+@using ExpenseTracker.Web.Client.Views.Bases
+
+<SfDashboardLayout Columns=@Columns ShowGridLines=@ShowGridLines>
+    <DashboardLayoutPanels>
+        @ChildContent
+    </DashboardLayoutPanels>
+</SfDashboardLayout>
+
+<style>
+    .e-panel-header {
+        background-color: rgba(0, 0, 0, .1);
+        text-align: center;
+    }
+
+    .e-panel-content {
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
