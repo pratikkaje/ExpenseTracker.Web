@@ -32,7 +32,7 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             }
             catch (TransactionValidationException transactionValidationException)
             {
-                var failedTransactionViewDependencyValidationException = 
+                var failedTransactionViewDependencyValidationException =
                     new FailedTransactionViewDependencyValidationException(transactionValidationException);
 
                 throw CreateAndLogDependencyValidationException(failedTransactionViewDependencyValidationException);
@@ -46,7 +46,7 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             }
             catch (TransactionDependencyException transactionDependencyException)
             {
-                var failedTransactionViewDependencyException = 
+                var failedTransactionViewDependencyException =
                     new FailedTransactionViewDependencyException(transactionDependencyException);
 
                 throw CreateAndLogDependencyException(failedTransactionViewDependencyException);
@@ -60,7 +60,7 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             }
             catch (Exception serviceException)
             {
-                var failedTransactionViewServiceException = 
+                var failedTransactionViewServiceException =
                     new FailedTransactionViewServiceException(serviceException);
 
                 throw CreateAndLogServiceException(failedTransactionViewServiceException);

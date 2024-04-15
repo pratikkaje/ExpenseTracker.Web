@@ -25,6 +25,6 @@ namespace ExpenseTracker.Web.Client.Views.Bases
         public RenderFragment HeaderContent { get; set; }
 
         [Parameter]
-        public RenderFragment Content { get; set;}
+        public RenderFragment Content { get; set; }
     }
 }

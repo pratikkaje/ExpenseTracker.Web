@@ -7,7 +7,6 @@ using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.TransactionViews;
 using ExpenseTracker.Web.Models.TransactionViews.Exceptions;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 using System;
 using System.Threading.Tasks;
