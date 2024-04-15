@@ -89,11 +89,11 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             return new TheoryData<Exception>
             {
                 new TransactionDependencyException(
-                    message: "Transaction dependency error occurred, contact support.",
+                    message: "Transaction service dependency error occurred, contact support.",
                     innerException),
 
                 new TransactionServiceException(
-                    message:"Transaction service error occured, contact support.",
+                    message:"Transaction service dependency error occurred, contact support.",
                     innerException)
             };
         }

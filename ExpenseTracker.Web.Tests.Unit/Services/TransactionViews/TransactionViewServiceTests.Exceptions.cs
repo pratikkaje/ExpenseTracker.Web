@@ -7,6 +7,7 @@ using ExpenseTracker.Web.Models.Transactions;
 using ExpenseTracker.Web.Models.TransactionViews;
 using ExpenseTracker.Web.Models.TransactionViews.Exceptions;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 using System;
 using System.Threading.Tasks;
@@ -76,10 +77,15 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             // given
             TransactionView someTransactionView = CreateRandomTransactionView();
 
+            var failedTransactionViewDependencyException =
+                new FailedTransactionViewDependencyException(
+                    message: "Failed transaction view dependency error occurred, contact support.",
+                    innerException: transactionServiceDependencyException);
+
             var expectedTransactionViewDependencyException =
                 new TransactionViewDependencyException(
-                    message: "Transaction view dependency error occurred.",
-                    transactionServiceDependencyException);
+                    message: "Transaction view dependency error occurred, contact support.",
+                    innerException: failedTransactionViewDependencyException);
 
             this.transactionServiceMock.Setup(service =>
                 service.AddTransactionAsync(It.IsAny<Transaction>()))
