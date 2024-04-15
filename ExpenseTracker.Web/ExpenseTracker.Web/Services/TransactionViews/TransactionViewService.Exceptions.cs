@@ -32,11 +32,17 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             }
             catch (TransactionValidationException transactionValidationException)
             {
-                throw CreateAndLogDependencyValidationException(transactionValidationException);
+                var failedTransactionViewDependencyValidationException = 
+                    new FailedTransactionViewDependencyValidationException(transactionValidationException);
+
+                throw CreateAndLogDependencyValidationException(failedTransactionViewDependencyValidationException);
             }
             catch (TransactionDependencyValidationException transactionDependencyValidationException)
             {
-                throw CreateAndLogDependencyValidationException(transactionDependencyValidationException);
+                var failedTransactionViewDependencyValidationException =
+                    new FailedTransactionViewDependencyValidationException(transactionDependencyValidationException);
+
+                throw CreateAndLogDependencyValidationException(failedTransactionViewDependencyValidationException);
             }
             catch (TransactionDependencyException transactionDependencyException)
             {

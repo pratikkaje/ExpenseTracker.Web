@@ -25,10 +25,15 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
             // given
             TransactionView someTransactionView = CreateRandomTransactionView();
 
+            var failedTransactionViewDependencyValidationException =
+                new FailedTransactionViewDependencyValidationException(
+                    message: "Failed transaction view dependency error occurred, try again.",
+                    innerException: transactionServiceValidationException);
+
             var expectedTransactionViewDependencyValidationException =
                 new TransactionViewDependencyValidationException(
                     message: "Transaction dependency validation error occurred, try again.",
-                    transactionServiceValidationException);
+                    failedTransactionViewDependencyValidationException);
 
             this.transactionServiceMock.Setup(service =>
                 service.AddTransactionAsync(It.IsAny<Transaction>()))
