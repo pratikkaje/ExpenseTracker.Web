@@ -8,11 +8,7 @@ using Syncfusion.Blazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-Syncfusion.Licensing.SyncfusionLicenseProvider
-    .RegisterLicense("");
-
 builder.Services.AddSyncfusionBlazor();
-
 
 
 await builder.Build().RunAsync();

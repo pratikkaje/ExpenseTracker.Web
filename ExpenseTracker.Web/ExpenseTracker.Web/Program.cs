@@ -26,13 +26,11 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        Syncfusion.Licensing.SyncfusionLicenseProvider
-            .RegisterLicense("");
-
+        ConfigureSyncfusionLicenseKey(builder);
 
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
-            .AddInteractiveWebAssemblyComponents();           
+            .AddInteractiveWebAssemblyComponents();
 
         builder.Services.AddSyncfusionBlazor();
 
@@ -71,6 +69,17 @@ internal class Program
             .AddAdditionalAssemblies(typeof(ExpenseTracker.Web.Client._Imports).Assembly);
 
         app.Run();
+    }
+
+    private static void ConfigureSyncfusionLicenseKey(WebApplicationBuilder builder)
+    {
+        LocalConfigurations localConfigurations =
+            builder.Configuration.Get<LocalConfigurations>();
+
+        string licenseKey = localConfigurations.SyncfusionLicense.Key;
+
+        Syncfusion.Licensing.SyncfusionLicenseProvider
+            .RegisterLicense(licenseKey);
     }
 
     private static void AddHttpClient(WebApplicationBuilder builder)
