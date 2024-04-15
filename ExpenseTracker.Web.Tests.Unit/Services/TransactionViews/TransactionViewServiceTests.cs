@@ -101,15 +101,8 @@ namespace ExpenseTracker.Web.Tests.Unit.Services.TransactionViews
         private Expression<Func<Transaction, bool>> SameTransactionAs(Transaction expectedTransaction) =>
             actualTransaction => this.compareLogic.Compare(expectedTransaction, actualTransaction).AreEqual;
 
-        //private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
-        //    actualException => actualException.SameExceptionAs(expectedException);
-
-        private Expression<Func<Exception, bool>> SameExceptionAs(
-             Exception expectedException)
-        {
-            return actualException => actualException.Message == expectedException.Message
-                && actualException.InnerException.Message == expectedException.InnerException.Message;
-        }
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
+            actualException => actualException.SameExceptionAs(expectedException);
 
         private static string GetRandomString() =>
             new MnemonicString().GetValue();

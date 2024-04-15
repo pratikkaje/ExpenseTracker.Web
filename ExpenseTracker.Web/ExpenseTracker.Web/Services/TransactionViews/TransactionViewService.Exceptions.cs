@@ -48,7 +48,10 @@ namespace ExpenseTracker.Web.Services.TransactionViews
             }
             catch (Exception serviceException)
             {
-                throw CreateAndLogServiceException(serviceException);
+                var failedTransactionViewServiceException = 
+                    new FailedTransactionViewServiceException(serviceException);
+
+                throw CreateAndLogServiceException(failedTransactionViewServiceException);
             }
         }
 
