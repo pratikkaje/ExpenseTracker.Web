@@ -3,7 +3,7 @@
 // FREE TO USE FOR THE WORLD
 // -------------------------------------------------------
 
-namespace ExpenseTracker.Web.Models.Basics
+namespace ExpenseTracker.Web.Models.ContainerComponents
 {
     public enum ComponentState
     {

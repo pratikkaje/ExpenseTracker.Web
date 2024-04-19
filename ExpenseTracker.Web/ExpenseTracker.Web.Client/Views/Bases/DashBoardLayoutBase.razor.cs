@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace ExpenseTracker.Web.Client.Views.Bases
 {
-    public partial class DashBoardLayoutBase : ComponentBase
+    public partial class DashboardLayoutBase : ComponentBase
     {
         [Parameter]
         public int Columns { get; set; }
@@ -29,5 +29,23 @@ namespace ExpenseTracker.Web.Client.Views.Bases
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+
+        public void SetColumns(int columns) =>
+            this.Columns = columns;
+
+        public void SetCellAspectRatio(double cellaspectratio) =>
+            this.CellAspectRatio = cellaspectratio;
+
+        public void SetCellSpacing(double[] cellspacing) =>
+            this.CellSpacing = cellspacing;
+
+        public void SetAllowDragging(bool allowDragging) =>
+            this.AllowDragging = allowDragging;
+
+        public void SetAllowResizing(bool allowResizing) =>
+            this.AllowResizing = allowResizing;
+
+        public void SetShowGridLines(bool showGridLines) =>
+            this.ShowGridLines = showGridLines;
     }
 }
